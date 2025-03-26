@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 public class PassengerManager {
     public static void managePassengers() {
-        Customer c1 = new Customer();
         Scanner scanner = new Scanner(System.in);
         int choice;
 
@@ -19,31 +18,47 @@ public class PassengerManager {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 -> c1.addNewCustomer();
+                case 1 -> Customer.addNewCustomer(); // Static method
                 case 2 -> {
-                    c1.displayCustomersData(false);
+                    Customer.displayCustomersData(false);
                     System.out.print("Enter CustomerID to search: ");
-                    c1.searchUser(scanner.nextLine());
+                    String searchId = scanner.nextLine();
+                    searchPassenger(searchId);
                 }
                 case 3 -> {
-                    c1.displayCustomersData(false);
+                    Customer.displayCustomersData(false);
                     System.out.print("Enter CustomerID to update: ");
-                    c1.editUserInfo(scanner.nextLine());
+                    Customer.editUserInfo(scanner.nextLine());
                 }
                 case 4 -> {
-                    c1.displayCustomersData(false);
+                    Customer.displayCustomersData(false);
                     System.out.print("Enter CustomerID to delete: ");
-                    c1.deleteUser(scanner.nextLine());
+                    deletePassenger(scanner.nextLine());
                 }
-                case 5 -> c1.displayCustomersData(false);
+                case 5 -> Customer.displayCustomersData(false);
             }
         } while (choice != 0);
     }
-    public static void viewPassengers(boolean showFullDetails) {
-        if (showFullDetails) {
-            Customer.displayCustomersData(false); // Show full details
+
+    private static void searchPassenger(String id) {
+        Customer.getCustomerCollection().stream()
+                .filter(c -> c.getUserID().equals(id))
+                .findFirst()
+                .ifPresentOrElse(
+                        c -> System.out.println(c.toString(1)),
+                        () -> System.out.println("Passenger not found!")
+                );
+    }
+
+    private static void deletePassenger(String id) {
+        if (Customer.getCustomerCollection().removeIf(c -> c.getUserID().equals(id))) {
+            System.out.println("Passenger deleted successfully!");
         } else {
-            Customer.displayCustomersData(true); // Show limited view
+            System.out.println("Passenger not found!");
         }
+    }
+
+    public static void viewPassengers(boolean showFullDetails) {
+        Customer.displayCustomersData(!showFullDetails);
     }
 }

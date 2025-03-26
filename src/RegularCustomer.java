@@ -33,4 +33,5 @@ public class RegularCustomer extends Customer {
     public List<Integer> getNumOfTicketsBookedByUser() {
         return numOfTicketsBookedByUser;
     }
+
 }

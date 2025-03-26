@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public abstract class Customer {
     protected final String userID;
@@ -98,7 +99,12 @@ public abstract class Customer {
     public static List<Customer> getCustomerCollection() {
         return customerCollection;
     }
-
+    public String randomIDDisplay(String randomID) {
+        if (randomID == null || randomID.length() <= 3) {
+            return randomID;
+        }
+        return randomID.substring(0, 3) + " " + randomID.substring(3);
+    }
     public String getPassword() { return password; }
     public String getPhone() { return phone; }
     public String getAddress() { return address; }
