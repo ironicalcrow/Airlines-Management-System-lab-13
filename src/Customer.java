@@ -13,7 +13,7 @@ public class Customer {
     private int age;
     public List<Flight> flightsRegisteredByUser;
     public List<Integer> numOfTicketsBookedByUser;
-    public static final List<Customer> customerCollection = User.getCustomersCollection();
+    public static final List<Customer> customerCollection = User.getCustomers();
 
     // ************************************************************
     // Behaviours/Methods
@@ -326,5 +326,8 @@ public class Customer {
 
     public void setAge(int age) {
         this.age = age;
+    }
+    public void editProfile(String userId) {
+        editUserInfo(userId);
     }
 }
