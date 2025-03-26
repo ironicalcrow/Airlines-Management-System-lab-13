@@ -41,10 +41,10 @@ public class Customer {
      * @param age      customer's age
      */
     Customer(String name, String email, String password, String phone, String address, int age) {
-        RandomGenerator random = new RandomGenerator();
+        RandomGenerator random = RandomGenerator.getInstance();
         random.randomIDGen();
         this.name = name;
-        this.userID = random.getRandomNumber();
+        this.userID = Integer.toString(random.randomIDGen());
         this.email = email;
         this.password = password;
         this.phone = phone;

@@ -44,12 +44,12 @@ public class Flight extends FlightDistance {
      * @param distanceBetweenTheCities gives the distance between the airports both in miles and kilometers
      * @param gate                     from where passengers will board to the aircraft
      */
-    Flight(String flightSchedule, String flightNumber, int numOfSeatsInTheFlight, String[][] chosenDestinations, String[] distanceBetweenTheCities, String gate) {
+    Flight(String flightSchedule, String flightNumber, int numOfSeatsInTheFlight, Destination[] chosenDestinations, String[] distanceBetweenTheCities, String gate) {
         this.flightSchedule = flightSchedule;
         this.flightNumber = flightNumber;
         this.numOfSeatsInTheFlight = numOfSeatsInTheFlight;
-        this.fromWhichCity = chosenDestinations[0][0];
-        this.toWhichCity = chosenDestinations[1][0];
+        this.fromWhichCity = chosenDestinations[0].getCity();
+        this.toWhichCity = chosenDestinations[1].getCity();
         this.distanceInMiles = Double.parseDouble(distanceBetweenTheCities[0]);
         this.distanceInKm = Double.parseDouble(distanceBetweenTheCities[1]);
         this.flightTime = calculateFlightTime(distanceInMiles);
@@ -63,10 +63,10 @@ public class Flight extends FlightDistance {
      */
     public void flightScheduler() {
         int numOfFlights = 15;              // decides how many unique flights to be included/display in scheduler
-        RandomGenerator r1 = new RandomGenerator();
+        RandomGenerator r1 = RandomGenerator.getInstance();
         for (int i = 0; i < numOfFlights; i++) {
-            String[][] chosenDestinations = r1.randomDestinations();
-            String[] distanceBetweenTheCities = calculateDistance(Double.parseDouble(chosenDestinations[0][1]), Double.parseDouble(chosenDestinations[0][2]), Double.parseDouble(chosenDestinations[1][1]), Double.parseDouble(chosenDestinations[1][2]));
+            Destination[] chosenDestinations = r1.randomDestinations();
+            String[] distanceBetweenTheCities = calculateDistance(chosenDestinations[0].getLat(),chosenDestinations[0].getLng(),chosenDestinations[1].getLat(),chosenDestinations[1].getLng());
             String flightSchedule = createNewFlightsAndTime();
             String flightNumber = r1.randomFlightNumbGen(2, 1).toUpperCase();
             int numOfSeatsInTheFlight = r1.randomNumOfSeats();

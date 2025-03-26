@@ -47,7 +47,7 @@ public String randomFlightNumbGen(int uptoHowManyLettersRequired, int divisible)
     randomAlphabets.append("-").append(randomNumOfSeats() / divisible);
     return randomAlphabets.toString();
 }
-public RandomGenerator getInstance() {
+public static RandomGenerator getInstance() {
     if(instance == null) {
         instance = new RandomGenerator();
     }
