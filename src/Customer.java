@@ -61,7 +61,7 @@ public class Customer {
      * already registered, program will ask the user
      * to enter new email address to get himself register.
      */
-    public void addNewCustomer() {
+    public static void addNewCustomer() {
         System.out.printf("\n\n\n%60s ++++++++++++++ Welcome to the Customer Registration Portal ++++++++++++++", "");
         Scanner read = new Scanner(System.in);
         System.out.print("\nEnter your name :\t");
@@ -327,7 +327,10 @@ public class Customer {
     public void setAge(int age) {
         this.age = age;
     }
-    public void editProfile(String userId) {
+    public static void editProfile(String userId) {
         editUserInfo(userId);
+    }
+    public static List<Customer> getCustomerCollection() {
+        return customerCollection;
     }
 }

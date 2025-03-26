@@ -1,17 +1,17 @@
 public class Passenger extends User {
     public static void handleLogin() {
-        RolesAndPermissions r1 = new RolesAndPermissions();
         System.out.print("\nEnter email: ");
         String email = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
-        String[] result = r1.isPassengerRegistered(email, password).split("-");
-        if (Integer.parseInt(result[0]) == 1) {
-            System.out.println("Logged in successfully!");
-            showPassengerDashboard(result[1]);
-        } else {
+        String authResult = authenticatePassenger(email, password);
+        if (authResult.equals("0")) {
             System.out.println("Invalid credentials!");
+        } else {
+            String userId = authResult.split("-")[1];
+            System.out.println("Logged in successfully!");
+            showPassengerDashboard(userId);
         }
     }
 

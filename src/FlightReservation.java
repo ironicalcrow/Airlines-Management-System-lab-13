@@ -227,11 +227,11 @@ public class FlightReservation implements DisplayClass {
         }
     }
 
-    public void viewBookings(String userId) {
+    public static void viewBookings(String userId) {
         displayFlightsRegisteredByOneUser(userId);
     }
 
-    public void bookFlight(String userId) {
+    public static void bookFlight(String userId) {
         Flight f1 = new Flight();
         f1.displayFlightSchedule();
         System.out.print("\nEnter flight number to book: ");

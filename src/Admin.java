@@ -1,17 +1,19 @@
 public class Admin extends User {
     public static void handleLogin() {
-        RolesAndPermissions r1 = new RolesAndPermissions();
         System.out.print("\nEnter admin username: ");
         String username = scanner.nextLine();
         System.out.print("Enter admin password: ");
         String password = scanner.nextLine();
 
-        int privilege = r1.isPrivilegedUserOrNot(username, password);
-        if (privilege == -1) {
+        int authResult = authenticateAdmin(username, password);
+        if (authResult == -1) {
             System.out.println("Invalid credentials!");
+        } else if (authResult == 0) {
+            System.out.println("Logged in with standard privileges");
+            showAdminDashboard(username, false);
         } else {
             System.out.println("Logged in as " + username);
-            showAdminDashboard(username);
+            showAdminDashboard(username, true);
         }
     }
 

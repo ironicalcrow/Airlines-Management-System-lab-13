@@ -3,19 +3,40 @@ import java.util.List;
 import java.util.Scanner;
 
 public abstract class User {
-    protected static String[][] adminCredentials = new String[10][2];
     protected static List<Customer> customers = new ArrayList<>();
-    protected static int adminCount = 1;
+    protected static String[][] adminCredentials = new String[10][2];
+    protected static int adminCount = 0;
     protected static Scanner scanner = new Scanner(System.in);
 
-    // Common initialization
     public static void initializeSystem() {
-        adminCredentials[0][0] = "root";
-        adminCredentials[0][1] = "root";
+        adminCredentials[adminCount][0] = "root";
+        adminCredentials[adminCount][1] = "root";
+        adminCount++;
         System.out.println("\n\t\t\t\t\t+++++++++++++ Welcome to BAV AirLines +++++++++++++\n");
     }
 
-    // Common display methods
+    public static int authenticateAdmin(String username, String password) {
+        for (int i = 0; i < adminCount; i++) {
+            if (username.equals(adminCredentials[i][0])){
+                if (password.equals(adminCredentials[i][1])) {
+                    return i; // Return index if authenticated
+                }
+            }
+        }
+        return -1; // Not authenticated
+    }
+
+    public static String authenticatePassenger(String email, String password) {
+        for (Customer c : Customer.getCustomerCollection()) {
+            if (email.equals(c.getEmail())) {
+                if (password.equals(c.getPassword())) {
+                    return "1-" + c.getUserID();
+                }
+            }
+        }
+        return "0";
+    }
+
     protected static void displayMainMenu() {
         System.out.println("\n\n\t\t(a) Press 0 to Exit.");
         System.out.println("\t\t(b) Press 1 to Login as admin.");
@@ -26,7 +47,6 @@ public abstract class User {
         System.out.print("\t\tEnter the desired option:    ");
     }
 
-    // Common getters
     public static List<Customer> getCustomers() {
         return customers;
     }
@@ -45,11 +65,9 @@ public abstract class User {
         if (choice == 1) {
             System.out.println(
                     "\n\n(1) Admin have the access to all users data...Admin can delete, update, add and can perform search for any customer...\n");
-            // ... [rest of the original admin manual instructions]
         } else {
             System.out.println(
                     "\n\n(1) Local user has the access to its data only...He/She won't be able to change/update other users data...\n");
-            // ... [rest of the original user manual instructions]
         }
     }
 }
