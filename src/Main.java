@@ -60,9 +60,26 @@ public class Main {
                 new Destination(48.999560, 2.539274, "Paris"),
                 new Destination(25.249869, 55.366483, "Dubai")
         };
-
         for (Destination d : destinations) {
             chart.add(d);
         }
+        User.initializeSystem();
+
+        int choice;
+        do {
+            User.displayMainMenu();
+            choice = User.scanner.nextInt();
+            User.scanner.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1 -> Admin.handleLogin();
+                case 2 -> Admin.handleRegistration();
+                case 3 -> Passenger.handleLogin();
+                case 4 -> Passenger.handleRegistration();
+                case 5 -> User.manualInstructions();
+                case 0 -> System.out.println("Goodbye!");
+                default -> System.out.println("Invalid choice!");
+            }
+        } while (choice != 0);
     }
 }

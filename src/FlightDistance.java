@@ -1,7 +1,7 @@
 public abstract class FlightDistance {
     public abstract String toString(int i);
 
-    public abstract String[] calculateDistance(double lat1, double lon1, double lat2, double lon2);
+    public abstract double[] calculateDistance(double lat1, double lon1, double lat2, double lon2);
 
     public void displayMeasurementInstructions(){
         String symbols = "+---------------------------+";

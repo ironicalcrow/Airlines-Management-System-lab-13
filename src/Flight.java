@@ -44,14 +44,14 @@ public class Flight extends FlightDistance {
      * @param distanceBetweenTheCities gives the distance between the airports both in miles and kilometers
      * @param gate                     from where passengers will board to the aircraft
      */
-    Flight(String flightSchedule, String flightNumber, int numOfSeatsInTheFlight, Destination[] chosenDestinations, String[] distanceBetweenTheCities, String gate) {
+    Flight(String flightSchedule, String flightNumber, int numOfSeatsInTheFlight, Destination[] chosenDestinations, double[] distanceBetweenTheCities, String gate) {
         this.flightSchedule = flightSchedule;
         this.flightNumber = flightNumber;
         this.numOfSeatsInTheFlight = numOfSeatsInTheFlight;
         this.fromWhichCity = chosenDestinations[0].getCity();
         this.toWhichCity = chosenDestinations[1].getCity();
-        this.distanceInMiles = Double.parseDouble(distanceBetweenTheCities[0]);
-        this.distanceInKm = Double.parseDouble(distanceBetweenTheCities[1]);
+        this.distanceInMiles = distanceBetweenTheCities[0];
+        this.distanceInKm = distanceBetweenTheCities[1];
         this.flightTime = calculateFlightTime(distanceInMiles);
         this.listOfRegisteredCustomersInAFlight = new ArrayList<>();
         this.gate = gate;
@@ -66,7 +66,7 @@ public class Flight extends FlightDistance {
         RandomGenerator r1 = RandomGenerator.getInstance();
         for (int i = 0; i < numOfFlights; i++) {
             Destination[] chosenDestinations = r1.randomDestinations();
-            String[] distanceBetweenTheCities = calculateDistance(chosenDestinations[0].getLat(),chosenDestinations[0].getLng(),chosenDestinations[1].getLat(),chosenDestinations[1].getLng());
+            double[] distanceBetweenTheCities = calculateDistance(chosenDestinations[0].getLat(),chosenDestinations[0].getLng(),chosenDestinations[1].getLat(),chosenDestinations[1].getLng());
             String flightSchedule = createNewFlightsAndTime();
             String flightNumber = r1.randomFlightNumbGen(2, 1).toUpperCase();
             int numOfSeatsInTheFlight = r1.randomNumOfSeats();
@@ -199,17 +199,17 @@ public class Flight extends FlightDistance {
      * @return distance both in miles and km between the cities/airports
      */
     @Override
-    public String[] calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    public double[] calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
         double distance = Math.sin(degreeToRadian(lat1)) * Math.sin(degreeToRadian(lat2)) + Math.cos(degreeToRadian(lat1)) * Math.cos(degreeToRadian(lat2)) * Math.cos(degreeToRadian(theta));
         distance = Math.acos(distance);
         distance = radianToDegree(distance);
         distance = distance * 60 * 1.1515;
         /* On the Zero-Index, distance will be in Miles, on 1st-index, distance will be in KM and on the 2nd index distance will be in KNOTS*/
-        String[] distanceString = new String[3];
-        distanceString[0] = String.format("%.2f", distance * 0.8684);
-        distanceString[1] = String.format("%.2f", distance * 1.609344);
-        distanceString[2] = Double.toString(Math.round(distance * 100.0) / 100.0);
+        double[] distanceString = new double[3];
+        distanceString[0] = distance * 0.8684;
+        distanceString[1] = distance * 1.609344;
+        distanceString[2] = Math.round(distance * 100.0) / 100.0;
         return distanceString;
     }
 
