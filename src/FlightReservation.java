@@ -12,8 +12,8 @@ import java.util.Scanner;
 public class FlightReservation implements DisplayClass {
 
     //        ************************************************************ Fields ************************************************************
-    Flight flight = new Flight();
-    int flightIndexInFlightList;
+    static Flight flight = new Flight();
+    static int flightIndexInFlightList;
 
     //        ************************************************************ Behaviours/Methods ************************************************************
 
@@ -28,7 +28,7 @@ public class FlightReservation implements DisplayClass {
      * @param numOfTickets number of tickets to be booked
      * @param userID       userID of the user which is booking the flight
      */
-    void bookFlight(String flightNo, int numOfTickets, String userID) {
+    static void bookFlight(String flightNo, int numOfTickets, String userID) {
         boolean isFound = false;
         for (Flight f1 : flight.getFlightList()) {
             if (flightNo.equalsIgnoreCase(f1.getFlightNumber())) {
@@ -66,8 +66,9 @@ public class FlightReservation implements DisplayClass {
      *
      * @param userID    ID of the user for whom the flight is to be cancelled
      */
-    void cancelFlight(String userID) {
+    static void cancelFlight(String userID) {
         String flightNum = "";
+        FlightReservation reservation = new FlightReservation();
         Scanner read = new Scanner(System.in);
         int index = 0, ticketsToBeReturned;
         boolean isFound = false;
@@ -75,7 +76,7 @@ public class FlightReservation implements DisplayClass {
             if (userID.equals(customer.getUserID())) {
                 if (customer.getFlightsRegisteredByUser().size() != 0) {
                     System.out.printf("%50s %s Here is the list of all the Flights registered by you %s", " ", "++++++++++++++", "++++++++++++++");
-                    displayFlightsRegisteredByOneUser(userID);
+                    reservation.displayFlightsRegisteredByOneUser(userID);
                     System.out.print("Enter the Flight Number of the Flight you want to cancel : ");
                     flightNum = read.nextLine();
                     System.out.print("Enter the number of tickets to cancel : ");
@@ -115,20 +116,20 @@ public class FlightReservation implements DisplayClass {
         }
     }
 
-    void addNumberOfTicketsToAlreadyBookedFlight(Customer customer, int numOfTickets) {
+    static void addNumberOfTicketsToAlreadyBookedFlight(Customer customer, int numOfTickets) {
         int newNumOfTickets = customer.numOfTicketsBookedByUser.get(flightIndexInFlightList) + numOfTickets;
         customer.numOfTicketsBookedByUser.set(flightIndexInFlightList, newNumOfTickets);
     }
 
-    void addNumberOfTicketsForNewFlight(Customer customer, int numOfTickets) {
+    static void addNumberOfTicketsForNewFlight(Customer customer, int numOfTickets) {
         customer.numOfTicketsBookedByUser.add(numOfTickets);
     }
 
-    boolean isFlightAlreadyAddedToCustomerList(List<Flight> flightList, Flight flight) {
+    static boolean isFlightAlreadyAddedToCustomerList(List<Flight> flightList, Flight flight) {
         boolean addedOrNot = false;
         for (Flight flight1 : flightList) {
             if (flight1.getFlightNumber().equalsIgnoreCase(flight.getFlightNumber())) {
-                this.flightIndexInFlightList = flightList.indexOf(flight1);
+                flightIndexInFlightList = flightList.indexOf(flight1);
                 addedOrNot = true;
                 break;
             }
@@ -206,7 +207,7 @@ public class FlightReservation implements DisplayClass {
         }
     }
 
-    int flightIndex(List<Flight> flightList, Flight flight) {
+    static int flightIndex(List<Flight> flightList, Flight flight) {
         int i = -1;
         for (Flight flight1 : flightList) {
             if (flight1.equals(flight)) {
@@ -228,17 +229,19 @@ public class FlightReservation implements DisplayClass {
     }
 
     public static void viewBookings(String userId) {
-        displayFlightsRegisteredByOneUser(userId);
+        FlightReservation flightReservation = new FlightReservation();
+        flightReservation.displayRegisteredUsersForASpecificFlight(userId);
     }
 
     public static void bookFlight(String userId) {
         Flight f1 = new Flight();
+        FlightReservation f2 = new FlightReservation();
         f1.displayFlightSchedule();
         System.out.print("\nEnter flight number to book: ");
         String flightNum = new Scanner(System.in).nextLine();
         System.out.print("Enter number of tickets: ");
         int tickets = new Scanner(System.in).nextInt();
-        bookFlight(flightNum, tickets, userId);
+        f2.bookFlight(flightNum, tickets, userId);
     }
 
 

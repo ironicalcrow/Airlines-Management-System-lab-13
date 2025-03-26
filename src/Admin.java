@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Admin extends User {
     public static void handleLogin() {
         System.out.print("\nEnter admin username: ");
@@ -17,33 +19,77 @@ public class Admin extends User {
         }
     }
 
-    private static void showAdminDashboard(String username) {
-        // Admin-specific operations
+    private static void showAdminDashboard(String username, boolean hasFullPrivileges) {
         int choice;
         do {
-            System.out.println("\nAdmin Dashboard");
-            System.out.println("1. Manage Passengers");
-            System.out.println("2. Manage Flights");
+            System.out.printf("\n%sAdmin Dashboard (%s privileges)%n",
+                    hasFullPrivileges ? "★ " : "",
+                    hasFullPrivileges ? "FULL" : "LIMITED");
+
+            System.out.println("1. View Flight Schedule");
+            System.out.println("2. View Passenger List");
+
+            if (hasFullPrivileges) {
+                System.out.println("3. Manage Passengers");
+                System.out.println("4. Manage Flights");
+                System.out.println("5. Register New Admin");
+            }
+
             System.out.println("0. Logout");
             System.out.print("Choice: ");
+
             choice = scanner.nextInt();
             scanner.nextLine();
-
+            Flight flight = new Flight();
             switch (choice) {
-                case 1 -> PassengerManager.managePassengers();
-                case 2 -> FlightManager.manageFlights();
+                case 1 -> flight.displayFlightSchedule();
+                case 2 -> PassengerManager.viewPassengers(hasFullPrivileges);
+                case 3 -> {
+                    if (hasFullPrivileges) {
+                        PassengerManager.managePassengers();
+                    } else {
+                        System.out.println("Insufficient privileges!");
+                    }
+                }
+                case 4 -> {
+                    if (hasFullPrivileges) {
+                        FlightManager.manageFlights();
+                    } else {
+                        System.out.println("Insufficient privileges!");
+                    }
+                }
+                case 5 -> {
+                    if (hasFullPrivileges) {
+                        registerNewAdmin();
+                    } else {
+                        System.out.println("Insufficient privileges!");
+                    }
+                }
+                case 0 -> System.out.println("Logging out...");
+                default -> System.out.println("Invalid choice!");
             }
         } while (choice != 0);
     }
 
-    public static void handleRegistration() {
-        RolesAndPermissions r1 = new RolesAndPermissions();
+    private static void registerNewAdmin() {
         System.out.print("\nEnter new admin username: ");
         String username = scanner.nextLine();
         System.out.print("Enter new admin password: ");
         String password = scanner.nextLine();
 
-        if (r1.isPrivilegedUserOrNot(username, password) != -1) {
+        adminCredentials[adminCount][0] = username;
+        adminCredentials[adminCount][1] = password;
+        adminCount++;
+        System.out.println("Admin registered successfully!");
+    }
+
+    public static void handleRegistration() {
+        System.out.print("\nEnter new admin username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter new admin password: ");
+        String password = scanner.nextLine();
+
+        if (authenticateAdmin(username, password) != -1) {
             System.out.println("Username already exists!");
             return;
         }

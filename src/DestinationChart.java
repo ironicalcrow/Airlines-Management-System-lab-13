@@ -1,9 +1,12 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class DestinationChart {
     private static DestinationChart instance;
     private List<Destination> destinations;
-    private DestinationChart() {}
+    private DestinationChart() {
+        destinations = new ArrayList<Destination>();
+    }
     public static DestinationChart getInstance() {
         if(instance == null) {
             instance = new DestinationChart();

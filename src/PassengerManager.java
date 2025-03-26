@@ -39,4 +39,11 @@ public class PassengerManager {
             }
         } while (choice != 0);
     }
+    public static void viewPassengers(boolean showFullDetails) {
+        if (showFullDetails) {
+            Customer.displayCustomersData(false); // Show full details
+        } else {
+            Customer.displayCustomersData(true); // Show limited view
+        }
+    }
 }

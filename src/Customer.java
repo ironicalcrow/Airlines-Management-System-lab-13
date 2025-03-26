@@ -131,7 +131,7 @@ public class Customer {
      *
      * @param emailID to be checked in the list
      */
-    public boolean isUniqueData(String emailID) {
+    public static boolean isUniqueData(String emailID) {
         boolean isUnique = false;
         for (Customer c : customerCollection) {
             if (emailID.equals(c.getEmail())) {
@@ -142,7 +142,7 @@ public class Customer {
         return isUnique;
     }
 
-    public void editUserInfo(String ID) {
+    public static void editUserInfo(String ID) {
         boolean isFound = false;
         Scanner read = new Scanner(System.in);
         for (Customer c : customerCollection) {
@@ -194,7 +194,7 @@ public class Customer {
      * @param showHeader to check if we want to print ascii art for the customers'
      *                   data.
      */
-    public void displayCustomersData(boolean showHeader) {
+    public static void displayCustomersData(boolean showHeader) {
         displayHeader();
         Iterator<Customer> iterator = customerCollection.iterator();
         int i = 0;
@@ -211,7 +211,7 @@ public class Customer {
     /**
      * Shows the header for printing customers data
      */
-    void displayHeader() {
+    static void displayHeader() {
         System.out.println();
         System.out.printf(
                 "%10s+------------+------------+----------------------------------+---------+-----------------------------+-------------------------------------+-------------------------+\n",

@@ -8,6 +8,10 @@ public abstract class User {
     protected static int adminCount = 0;
     protected static Scanner scanner = new Scanner(System.in);
 
+    static {
+        initializeSystem();
+    }
+
     public static void initializeSystem() {
         adminCredentials[adminCount][0] = "root";
         adminCredentials[adminCount][1] = "root";
@@ -17,13 +21,13 @@ public abstract class User {
 
     public static int authenticateAdmin(String username, String password) {
         for (int i = 0; i < adminCount; i++) {
-            if (username.equals(adminCredentials[i][0])){
+            if (username.equals(adminCredentials[i][0])) {
                 if (password.equals(adminCredentials[i][1])) {
-                    return i; // Return index if authenticated
+                    return i;
                 }
             }
         }
-        return -1; // Not authenticated
+        return -1;
     }
 
     public static String authenticatePassenger(String email, String password) {
@@ -37,6 +41,25 @@ public abstract class User {
         return "0";
     }
 
+    public static boolean registerAdmin(String username, String password) {
+        if (adminCount >= adminCredentials.length) {
+            System.out.println("Admin capacity reached!");
+            return false;
+        }
+
+        for (int i = 0; i < adminCount; i++) {
+            if (username.equals(adminCredentials[i][0])) {
+                System.out.println("Username already exists!");
+                return false;
+            }
+        }
+
+        adminCredentials[adminCount][0] = username;
+        adminCredentials[adminCount][1] = password;
+        adminCount++;
+        return true;
+    }
+
     protected static void displayMainMenu() {
         System.out.println("\n\n\t\t(a) Press 0 to Exit.");
         System.out.println("\t\t(b) Press 1 to Login as admin.");
@@ -47,9 +70,6 @@ public abstract class User {
         System.out.print("\t\tEnter the desired option:    ");
     }
 
-    public static List<Customer> getCustomers() {
-        return customers;
-    }
     public static void manualInstructions() {
         Scanner read = new Scanner(System.in);
         System.out.printf("%n%n%50s %s Welcome to BAV Airlines User Manual %s", "", "+++++++++++++++++",
@@ -63,11 +83,33 @@ public abstract class User {
             choice = read.nextInt();
         }
         if (choice == 1) {
-            System.out.println(
-                    "\n\n(1) Admin have the access to all users data...Admin can delete, update, add and can perform search for any customer...\n");
+            displayAdminManual();
         } else {
-            System.out.println(
-                    "\n\n(1) Local user has the access to its data only...He/She won't be able to change/update other users data...\n");
+            displayPassengerManual();
         }
+    }
+
+    private static void displayAdminManual() {
+        System.out.println(
+                "\n\n(1) Admin have the access to all users data...Admin can delete, update, add and can perform search for any customer...\n");
+        System.out.println(
+                "(2) In order to access the admin module, you've to get yourself register by pressing 2, when the main menu gets displayed...\n");
+        System.out.println(
+                "(3) Provide the required details i.e., name, email, id...Once you've registered yourself, press 1 to login as an admin... \n");
+        System.out.println(
+                "(4) Once you've logged in, admin dashboard will be displayed on the screen...From here on, you can select from variety of options...\n");
+    }
+
+    private static void displayPassengerManual() {
+        System.out.println(
+                "\n\n(1) Local user has the access to its data only...He/She won't be able to change/update other users data...\n");
+        System.out.println(
+                "(2) In order to access local users benefits, you've to get yourself register by pressing 4, when the main menu gets displayed...\n");
+        System.out.println(
+                "(3) Provide the details asked by the program to add you to the users list...Once you've registered yourself, press \"3\" to login as a passenger...\n");
+    }
+
+    public static List<Customer> getCustomers() {
+        return customers;
     }
 }
